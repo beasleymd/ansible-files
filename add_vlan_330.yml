@@ -1,0 +1,14 @@
+---
+- name: Show Running Config
+  hosts: switches
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    - name: Show run
+      ios_vlans:
+        config:
+          - name: Vlan_220
+            vlan_id: 220
+            state: active
+        state: merged
