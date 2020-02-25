@@ -1,13 +1,14 @@
 ---
-- name: Gather IOS Device Facts
+- name: Show Running Config
   hosts: remote
   connection: network_cli
   gather_facts: no
 
   tasks:
-    - name: Gather Facts
+    - name: Show run
       ios_command:
-        commands: show running-config
+        commands:
+          - show running-config
       register: showrun
 
     - name: Print out running config
