@@ -11,6 +11,4 @@
           - name: Vlan_220
             vlan_id: 220
             state: active
-            shutdown: disabled
-            remote_span: 10
         state: merged
