@@ -1,0 +1,10 @@
+---
+- name: Gather IOS Device Facts
+  hosts: remote
+  gather_facts: no
+
+  tasks:
+    - name: Gather Facts
+      ios_facts:
+        gather_subset: all
+        

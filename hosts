@@ -1,11 +1,11 @@
-[ios]
+localhost
 
-rtr1 ansible_host=100.25.213.180 site=1
-rtr2 ansible_host=52.207.224.201 site=2
-rtr3 ansible_host=3.94.166.65 site=3
-rtr4 ansible_host=52.54.127.146 site=4
+[remote]
+10.1.1.1
+10.1.3.2
+10.1.3.4
 
-[ios:vars]
+[remote:vars]
 ansible_network_os=ios
-;ansible_user=ec2-user
-;ansible_ssh_private_key_file=
+ansible_ssh_user=admin
+ansible_ssh_pass=c1sc0
