@@ -1,0 +1,15 @@
+---
+- name: Gather IOS Device Facts
+  hosts: remote
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    - name: Gather Facts
+      ios_command:
+        commands: show running-config
+      register: showrun
+
+    - name: Print out running config
+      debug:
+        var: showrun.stdout
