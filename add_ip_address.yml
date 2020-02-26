@@ -4,10 +4,10 @@
   connection: network_cli
   gather_facts: no
 
-- name: Merge provided configuration with device configuration
+- name: Merge provided ip address
   ios_l3_interfaces:
     config:
-      - name: Serial0/3/0
+      - name: Serial 0/3/0
         ipv4:
         - address: 10.1.10.1/24
     state: merged
