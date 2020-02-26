@@ -5,7 +5,7 @@
   gather_facts: no
 
   tasks:
-    - name: Show run
+    - name: Add vlan
       ios_vlans:
         config:
           - name: Vlan_220
