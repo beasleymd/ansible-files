@@ -8,6 +8,7 @@
   - name: add vlan
     ios_command:
      commands:
+       - enable
        - vlan 330
        - name vlanTest
        - end
