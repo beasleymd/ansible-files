@@ -1,15 +1,14 @@
 ---
-- name: Adding VLANs
-  hosts: switches
+- name: Adding VLAN
+  hosts: switch_a
   connection: network_cli
   gather_facts: no
 
   tasks:
-    - name: Show run
+    - name: Add VLAN
       ios_vlans:
         config:
           - name: Vlan_330
             vlan_id: 330
             state: active
-            shutdown: enabled
         state: merged
