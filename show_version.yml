@@ -1,5 +1,5 @@
 ---
-- name: Show Version and interfaces
+- name: Show Version and Interfaces
   hosts: switches
   connection: network_cli
   gather_facts: no
@@ -10,8 +10,3 @@
       commands:
         - show version
         - show interfaces
-      register: showversion
-
-    - name: Print out version
-      debug:
-        var: showversion.stdout
