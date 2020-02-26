@@ -1,0 +1,16 @@
+---
+- name: Show Running Config
+  hosts: switches
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    - name: Show vlans
+      ios_command:
+        commands:
+          - show vlan
+      register: showrun
+
+    - name: Print out running config
+      debug:
+        var: showrun.stdout
