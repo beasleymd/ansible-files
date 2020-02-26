@@ -7,7 +7,7 @@
 
   tasks:
   - name: add vlan
-    ios_config:
+    ios_command:
      lines:
        - vlan 330
        - name vlanTest
