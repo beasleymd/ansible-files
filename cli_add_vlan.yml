@@ -1,5 +1,5 @@
 ---
-- name: Adding VLAN
+- name: New VLAN
   hosts: switch_a
   connection: network_cli
   gather_facts: no
