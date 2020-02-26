@@ -9,6 +9,6 @@ tasks:
     ios_config:
       lines:
         - interface Serial 0/3/0
-        - ip address 10.1.80.1
+        - ip address 10.1.80.1 255.255.255.0
         - shutdown
         - no shutdown
