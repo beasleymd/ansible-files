@@ -3,11 +3,11 @@
   hosts: switch_a
   connection: network_cli
   gather_facts: no
-  
+
   tasks:
   - name: add vlan
     ios_command:
-     lines:
+     commands:
        - vlan 330
        - name vlanTest
        - end
