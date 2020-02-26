@@ -10,6 +10,8 @@
       commands:
         - show version
         - show interfaces
-      wait_for:
-        - result[0] contains IOS
-        - result[1] contains Loopback0
+      register: showversion
+
+    - name: Print out version
+      debug:
+        var: showversion.stdout
