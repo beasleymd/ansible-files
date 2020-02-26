@@ -4,7 +4,6 @@
   connection: network_cli
   gather_facts: no
   become_method: enable
-  hosts: all
 
   tasks:
   - name: add vlan
