@@ -5,7 +5,7 @@
   gather_facts: no
 
   tasks:
-    - name: Show run
+    - name: Show vlans
       ios_command:
         commands:
           - show vlan
