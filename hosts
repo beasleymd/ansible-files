@@ -22,3 +22,5 @@ switches
 ansible_network_os=ios
 ansible_ssh_user=admin
 ansible_ssh_pass=c1sc0
+ansible_become_method=enable
+ansible_become_password=c1sc0
