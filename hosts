@@ -7,6 +7,12 @@ localhost
 10.1.3.2
 10.1.3.4
 
+[switch_a]
+10.1.3.2
+
+[switch_b]
+10.1.3.4
+
 [remote:children]
 routers
 switches
