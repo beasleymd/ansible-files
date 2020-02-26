@@ -5,11 +5,8 @@
   gather_facts: no
 
   tasks:
-  - name: Merge provided configuration with device configuration
-  ios_vlans:
-    config:
-      - name: Vlan_400
-        vlan_id: 400
-        state: active
-        shutdown: enabled
-    state: merged
+  - name: new vlan
+  ios_vlan:
+    vlan_id: 400
+    name: VLAN_400
+    state: present
