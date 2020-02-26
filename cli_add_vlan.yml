@@ -11,6 +11,5 @@
       - name: Vlan_400
         vlan_id: 400
         state: active
-        shutdown: disabled
-        remote_span: 400
+        shutdown: enabled
     state: merged
