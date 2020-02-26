@@ -3,8 +3,7 @@
   hosts: switch_a
   connection: network_cli
   gather_facts: no
-  become_method: enable
-
+  
   tasks:
   - name: add vlan
     ios_command:
