@@ -1,12 +1,10 @@
-----
+---
 - name: Adding VLAN
   hosts: switch_a
   connection: network_cli
   gather_facts: no
   become_method: enable
   hosts: all
-
-  tasks:
 
   tasks:
   - name: add vlan
