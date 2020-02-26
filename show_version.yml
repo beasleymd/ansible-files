@@ -1,16 +1,15 @@
 ---
-- name: Show Running Config
+- name: Show Version and interfaces
   hosts: switches
   connection: network_cli
   gather_facts: no
 
   tasks:
-    - name: Show vlans
-      ios_command:
-        commands:
-          - show vlan
-      register: showrun
-
-    - name: Print out running config
-      debug:
-        var: showrun.stdout
+  - name: run multiple commands and evaluate output
+    ios_command:
+      commands:
+        - show version
+        - show interfaces
+      wait_for:
+        - result[0] contains IOS
+        - result[1] contains Loopback0
