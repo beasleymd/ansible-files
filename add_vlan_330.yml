@@ -4,11 +4,10 @@
   connection: network_cli
   gather_facts: no
 
-  tasks:
-    - name: Add VLAN
-      ios_vlans:
-        config:
-          - name: Vlan_330
-            vlan_id: 330
-            state: active
-        state: merged
+tasks:
+  - name: add vlan
+    ios_config:
+      lines:
+        - vlan 20
+        - name vlanTest
+        - end
