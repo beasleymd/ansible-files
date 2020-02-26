@@ -1,12 +1,12 @@
 ---
-- name: New VLAN
+- name: IOS VLAN
   hosts: switch_a
   connection: network_cli
   gather_facts: no
 
   tasks:
-  - name: new vlan
-  ios_vlan:
-    vlan_id: 400
-    name: VLAN_400
-    state: present
+  - name: ios vlan
+    ios_vlan:
+      vlan_id: 85
+      name: VLAN_85
+      state: present
