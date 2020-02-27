@@ -18,3 +18,4 @@
         commands:
           - name TestVLAN
         parents: vlan 30
+      become: yes
