@@ -1,6 +1,6 @@
 ---
-- name: Show Running Config
-  hosts: switches
+- name: Delete VLAN Access Ports
+  hosts: switch_b
   connection: network_cli
   gather_facts: no
 
@@ -13,8 +13,12 @@
     #         state: active
     #     state: merged
       # become: yes
-    - name: delete vlans
+    - name: Delete vlan access port
       ios_config:
         commands:
-          - no vlan 30
+          - switchport mode access
+          - no switchport access vlan 30
+          - shutdown
+          - no shutdown
+        parents: interface range fastEthernet 1/0/1 - 16
       become: yes

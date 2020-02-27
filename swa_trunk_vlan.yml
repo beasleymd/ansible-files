@@ -1,6 +1,6 @@
 ---
-- name: Show Running Config
-  hosts: switches
+- name: Trunk VLAN Access Ports
+  hosts: switch_a
   connection: network_cli
   gather_facts: no
 
@@ -13,8 +13,12 @@
     #         state: active
     #     state: merged
       # become: yes
-    - name: delete vlans
+    - name: trunk vlan access port
       ios_config:
         commands:
-          - no vlan 30
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - shutdown
+          - no shutdown
+        parents: interface fastEthernet 2/0/48
       become: yes
