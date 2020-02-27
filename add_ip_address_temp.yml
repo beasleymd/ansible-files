@@ -1,14 +1,14 @@
 ---
-  - name: add ip Address
-    hosts: routers
-    connection: network_cli
-    gather_facts: no
+- name: add ip Address
+  hosts: routers
+  connection: network_cli
+  gather_facts: no
 
-    tasks:
-      - name: add ip Address
-        ios_config:
-          line:
-            - ip address 10.1.80.1 255.255.255.0
+  tasks:
+    - name: add ip Address
+      ios_config:
+        line:
+          - ip address 10.1.80.1 255.255.255.0
         parents: interface serial 0/3/0
         become: yes
 
@@ -25,3 +25,4 @@
             - no shutdown
         parents: interface serial 0/3/0
         become: yes
+        
