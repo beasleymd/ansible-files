@@ -12,4 +12,4 @@
             vlan_id: 220
             state: active
         state: merged
-      become: yes
+      # become: yes
