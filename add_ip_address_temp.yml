@@ -12,17 +12,16 @@
         parents: interface serial 0/3/0
         become: yes
 
-      - name: shutdown interface
-        ios_config:
-          lines:
-            - shutdown
+    - name: shutdown interface
+      ios_config:
+        lines:
+          - shutdown
         parents: interface serial 0/3/0
         become: yes
 
-      - name: turn on interface
-        ios_config:
-          line:
-            - no shutdown
+    - name: turn on interface
+      ios_config:
+        line:
+          - no shutdown
         parents: interface serial 0/3/0
         become: yes
-        
