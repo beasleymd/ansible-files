@@ -1,6 +1,6 @@
 ---
 - name: Show Running Config
-  hosts: remote
+  hosts: switches
   connection: network_cli
   gather_facts: no
 
