@@ -1,5 +1,5 @@
 ---
-- name: Show Running Config
+- name: Show VLANs
   hosts: switches
   connection: network_cli
   gather_facts: no
@@ -11,6 +11,6 @@
           - show vlan
       register: showrun
 
-    - name: Print out running config
+    - name: Print out vlans
       debug:
         var: showrun.stdout
