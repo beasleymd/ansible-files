@@ -5,12 +5,16 @@
   gather_facts: no
 
   tasks:
-    - name: Show run
-      ios_vlans:
-        config:
-          - name: Vlan_220
-            vlan_id: 220
-            state: active
-            shutdown: disabled
-            remote_span: 10
-        state: deleted
+    # - name: Adding vlan
+    #   ios_vlans:
+    #     config:
+    #       - name: Vlan_220
+    #         vlan_id: 220
+    #         state: active
+    #     state: merged
+      # become: yes
+    - name: delete vlans
+      ios_config:
+        commands:
+          - no vlan 30
+      become: yes
