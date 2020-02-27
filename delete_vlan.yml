@@ -14,7 +14,7 @@
     #     state: merged
       # become: yes
     - name: delete vlans
-      ios_config:
+      ios_config: 
         commands:
           - no vlan 30
       become: yes
