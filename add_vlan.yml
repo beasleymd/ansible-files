@@ -5,11 +5,11 @@
   gather_facts: no
 
   tasks:
-    - name: Add vlan
+    - name: Adding vlan
       ios_vlans:
         config:
           - name: Vlan_220
             vlan_id: 220
             state: active
         state: merged
-        become: yes
+      become: yes
