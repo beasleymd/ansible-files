@@ -1,0 +1,43 @@
+---
+- name: Add Hostname, VLAN Access & Trunk Ports, IP Addresses, Enable Jumbo Frames, Enable VXLAN 
+  hosts: switch_b
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    # - name: Adding vlan
+    #   ios_vlans:
+    #     config:
+    #       - name: Vlan_30
+    #         vlan_id: 30
+    #         state: active
+    #     state: merged
+      # become: yes
+    - name: adding vlan access port
+      ios_config:
+        commands:
+          - switchport mode access
+          - switchport access vlan 30
+          - shutdown
+          - no shutdown
+        parents: interface range fastEthernet 1/0/1 - 16
+      become: yes
+      
+      
+    # - name: Adding vlan
+    #   ios_vlans:
+    #     config:
+    #       - name: Vlan_30
+    #         vlan_id: 30
+    #         state: active
+    #     state: merged
+      # become: yes
+    - name: adding vlan access port
+      ios_config:
+        commands:
+          - switchport mode access
+          - switchport access vlan 30
+          - shutdown
+          - no shutdown
+        parents: interface range fastEthernet 1/0/1 - 16
+      become: yes
