@@ -8,8 +8,8 @@
     # - name: Adding vlan
     #   ios_vlans:
     #     config:
-    #       - name: Vlan_220
-    #         vlan_id: 220
+    #       - name: Vlan_30
+    #         vlan_id: 30
     #         state: active
     #     state: merged
       # become: yes
