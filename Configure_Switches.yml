@@ -25,15 +25,8 @@
 
 
 
-    # - name: Adding vlan trunk port
-    #   ios_vlans:
-    #     config:
-    #       - name: Vlan_220
-    #         vlan_id: 220
-    #         state: active
-    #     state: merged
-      # become: yes
-    - name: vlan trunk port
+ 
+    - name: Adding a vlan trunk port
       ios_config:
         commands:
           - switchport trunk encapsulation dot1q
