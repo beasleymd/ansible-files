@@ -1,0 +1,22 @@
+[all:vars]
+ansible_user=student1
+ansible_ssh_pass=ZBfoLlrkdgupOl
+ansible_port=22
+
+[control]
+ansible ansible_host=3.1.6.204 private_ip=172.16.8.241
+
+[attack]
+attacker ansible_host=54.179.60.73 ansible_user=ec2-user private_ip=172.16.240.22 private_ip2=172.17.133.169
+
+[siem]
+qradar ansible_host=54.251.164.15 ansible_user=admin private_ip=172.16.111.102 ansible_httpapi_pass="Ansible1!" ansible_connection=httpapi ansible_httpapi_use_ssl=yes ansible_httpapi_validate_certs=False ansible_network_os=ibm.qradar.qradar
+
+[ids]
+snort ansible_host=3.0.95.33 ansible_user=ec2-user private_ip=172.16.179.206 private_ip2=172.17.145.170
+
+[firewall]
+checkpoint ansible_host= ansible_user=admin ansible_password=admin123 private_ip=172.16.131.109 ansible_network_os=checkpoint ansible_connection=httpapi ansible_httpapi_use_ssl=yes ansible_httpapi_validate_certs=no
+
+[windows]
+windows-ws ansible_host=18.141.187.245 ansible_user=Administrator ansible_pass=0lXL9UTrss9Ayc ansible_port=5986 ansible_connection=winrm ansible_winrm_server_cert_validation=ignore private_ip=172.16.237.2
