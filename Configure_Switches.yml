@@ -1,6 +1,6 @@
 ---
-- name: Add VLAN Access Ports
-  hosts: switch_a
+- name: Add VLAN Access & Trunk Ports, IP Addresses, Enable Jumbo Frames, Enable VXLAN 
+  hosts: switch_b
   connection: network_cli
   gather_facts: no
 
@@ -20,5 +20,18 @@
           - switchport access vlan 30
           - shutdown
           - no shutdown
-        parents: interface range fastEthernet 2/0/1 - 16
+        parents: interface range fastEthernet 1/0/1 - 16
+      become: yes
+
+
+
+ 
+    - name: Adding a vlan trunk port
+      ios_config:
+        commands:
+          - switchport trunk encapsulation dot1q
+          - switchport mode trunk
+          - shutdown
+          - no shutdown
+        parents: interface fastEthernet 1/0/48
       become: yes
