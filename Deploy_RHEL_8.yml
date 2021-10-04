@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+  collections: 
+    - community.general
+    - community.vmware
+
+  tasks: 
+    - name: Deploy Virtual Machine from template in content library
+      community.vmware.vmware_content_deploy_template:
+        hostname: 192.168.1.52
+        username: administrator@vcenter.mdblab
+        password: Vcenter1!
+        template: RHEL_Template
+        datastore: datastore1
+        datacenter: mdblabdatacenter
+        name: Sample_VM
+        state: present
+      delegate_to: localhost
