@@ -22,6 +22,9 @@
 [switch_b]
 10.1.3.4
 
+[vcenter]
+192.168.1.52
+
 [remote:children]
 routers
 switches
