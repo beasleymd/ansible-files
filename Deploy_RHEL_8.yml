@@ -8,7 +8,7 @@
 
   tasks: 
     - name: Deploy Virtual Machine from template in content library
-      vmware_content_deploy_template:
+      community.vmware.vmware_content_deploy_template:
         hostname: 192.168.1.52
         username: administrator@vcenter.mdblab
         password: Vcenter1!
