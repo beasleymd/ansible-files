@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Create a RHEL 8 VM from Template
+  hosts: localhost
   gather_facts: no
   connection: local
   collections: 
