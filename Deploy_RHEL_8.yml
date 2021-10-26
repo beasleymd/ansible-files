@@ -10,6 +10,7 @@
     - name: Deploy Virtual Machine from template in content library
       community.vmware.vmware_content_deploy_template:
         hostname: 192.168.1.52
+        host: 192.168.1.8
         username: administrator@vcenter.mdblab
         password: Vcenter1!
         template: RHEL_Template
