@@ -13,7 +13,7 @@
         host: 192.168.1.8
         username: administrator@vcenter.mdblab
         password: Vcenter1!
-        validate_certs: false 
+        validate_certs: no 
         template: RHEL_Template
         datastore: datastore1
         datacenter: mdblabdatacenter
