@@ -18,6 +18,6 @@
         template: RHEL_Template
         datastore: datastore1
         datacenter: mdblabdatacenter
-        folder: RHEL_Template
+        folder: /mdblabdatacenter/RHEL_Template
         state: present
       delegate_to: localhost
