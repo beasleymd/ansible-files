@@ -14,9 +14,10 @@
         username: administrator@vcenter.mdblab
         password: Vmware1!
         validate_certs: no 
+        name: Sample_RHEL_VM
         template: RHEL_Template
         datastore: datastore1
         datacenter: mdblabdatacenter
-        name: Sample_VM
+        folder: RHEL_Template
         state: present
       delegate_to: localhost
