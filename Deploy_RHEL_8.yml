@@ -16,8 +16,8 @@
         validate_certs: no 
         name: Sample_RHEL_VM
         template: RHEL_Template
+        content_library: test_content_library
         datastore: datastore1
         datacenter: mdblabdatacenter
-        folder: /mdblabdatacenter/RHEL_Template
         state: present
       delegate_to: localhost
