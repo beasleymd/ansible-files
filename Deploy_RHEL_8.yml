@@ -16,7 +16,7 @@
         validate_certs: no 
         name: Sample_RHEL_VM
         template: RHEL_Template
-        content_library: test_content_library
+        library: content_library_templates
         datastore: datastore1
         datacenter: mdblabdatacenter
         state: present
