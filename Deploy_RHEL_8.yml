@@ -9,8 +9,7 @@
   tasks: 
     - name: Create a virtual machine from a template
       community.vmware.vmware_guest:
-        hostname: 192.168.1.52
-        host: 192.168.1.8      
+        hostname: 192.168.1.52     
         username: administrator@vcenter.mdblab
         password: Vmware1!
         validate_certs: no      
