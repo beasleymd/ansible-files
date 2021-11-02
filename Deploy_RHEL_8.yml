@@ -19,7 +19,7 @@
         datacenter: mdblabdatacenter
         folder: VM_Folder
         disk:
-        - size_gb: 30
+        - size_gb: 40
           type: thin
           datastore: datastore1
         # Add another disk from an existing VMDK
