@@ -16,6 +16,7 @@
         name: Sample_RHEL_VM
         state: poweredon
         template: RHEL_Template
+        folder: VM_Folder
         disk:
         - size_gb: 30
           type: thin
