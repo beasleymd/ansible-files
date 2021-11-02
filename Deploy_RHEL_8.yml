@@ -7,16 +7,46 @@
     - community.vmware
 
   tasks: 
-    - name: Deploy Virtual Machine from template in content library
-      community.vmware.vmware_content_deploy_template:
+    - name: Create a virtual machine from a template
+      community.vmware.vmware_guest:
         hostname: 192.168.1.52
-        host: 192.168.1.8
+        host: 192.168.1.8      
         username: administrator@vcenter.mdblab
         password: Vmware1!
-        validate_certs: no 
+        validate_certs: no      
         name: Sample_RHEL_VM
+        state: poweredon
         template: RHEL_Template
-        datastore: datastore1
-        datacenter: mdblabdatacenter
-        state: present
+        disk:
+        - size_gb: 30
+          type: thin
+          datastore: datastore1
+        # Add another disk from an existing VMDK
+        hardware:
+          memory_mb: 512
+          num_cpus: 6
+          num_cpu_cores_per_socket: 3
+          scsi: paravirtual
+          memory_reservation_lock: false
+          mem_limit: 8096
+          mem_reservation: 4096
+          cpu_limit: 8096
+          cpu_reservation: 4096
+          max_connections: 5
+          hotadd_cpu: True
+          hotremove_cpu: True
+          hotadd_memory: False
+          version: 12 # Hardware version of virtual machine
+          boot_firmware: "efi"
+        # cdrom:
+            # - controller_number: 0
+              # unit_number: 0
+              # state: present
+              # type: iso
+            # iso_path: "[datastore1] livecd.iso"
+        networks:
+        - name: VM Network
+          mac: aa:bb:dd:aa:00:14
+        wait_for_ip_address: true
       delegate_to: localhost
+      register: deploy
