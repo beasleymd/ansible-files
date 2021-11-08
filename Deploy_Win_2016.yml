@@ -1,0 +1,53 @@
+---
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  collections: 
+    - community.general
+    - community.vmware
+
+  tasks: 
+    - name: Create a virtual machine from a template
+      community.vmware.vmware_guest:
+        hostname: 192.168.1.52     
+        username: administrator@vcenter.mdblab
+        password: Vmware1!
+        validate_certs: no      
+        name: Sample_Win_2016_VM
+        state: poweredon
+        template: Win_2016_template
+        datacenter: mdblabdatacenter
+        folder: VM_Folder
+        disk:
+        - size_gb: 40
+          type: thin
+          datastore: datastore1
+        # Add another disk from an existing VMDK
+        # hardware:
+         # memory_mb: 512
+          #num_cpus: 6
+          #num_cpu_cores_per_socket: 3
+          #scsi: paravirtual
+          #memory_reservation_lock: false
+          #mem_limit: 8096
+          #mem_reservation: 4096
+          #cpu_limit: 8096
+          #cpu_reservation: 4096
+          #max_connections: 5
+          #hotadd_cpu: True
+          #hotremove_cpu: True
+          #hotadd_memory: False
+          #version: 12 # Hardware version of virtual machine
+          #boot_firmware: "efi"
+        # cdrom:
+            # - controller_number: 0
+              # unit_number: 0
+              # state: present
+              # type: iso
+            # iso_path: "[datastore1] livecd.iso"
+        networks:
+        - name: VM Network
+          mac: aa:bb:dd:aa:00:14
+        wait_for_ip_address: true
+      delegate_to: localhost
+      register: deploy
