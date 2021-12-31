@@ -17,9 +17,8 @@ localhost
 routers
 switches
 
-[ios:vars]
-ansible_become=yes
-ansible_become_method=enable
-ansible_network_os=cisco.ios.ios
+[remote:vars
+ansible_ssh_pass=c1sc0
 ansible_user=admin
-ansible_password=c1sc0
+ansible_network_os=ios
+ansible_connection=network_cli
