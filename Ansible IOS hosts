@@ -13,11 +13,11 @@ localhost
 [Switch-B-3850]
 10.0.1.100
 
-[remote:children]
+[cisco:children]
 routers
 switches
 
-[remote:vars]
+[cisco:vars]
 ansible_ssh_pass=c1sc0
 ansible_user=admin
 ansible_network_os=ios
