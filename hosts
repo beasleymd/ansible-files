@@ -5,7 +5,7 @@
 192.168.1.55
 
 [cisco_devnet]
-CSR1000V Host: sandbox-iosxe-recomm-1.cisco.com
+sandbox-iosxe-recomm-1.cisco.com
 
 [switches]
 10.0.0.100
