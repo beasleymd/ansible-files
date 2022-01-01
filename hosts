@@ -4,9 +4,6 @@
 [routers]
 192.168.1.55
 
-[cisco_devnet]
-sandbox-iosxe-recomm-1.cisco.com
-
 [switches]
 10.0.0.100
 10.0.1.100
@@ -30,10 +27,3 @@ ansible_ssh_user=admin
 ansible_ssh_pass=c1sc0
 ansible_become_method=enable
 ansible_become_password=c1sc0
-
-[cisco_devnet:var]
-ansible_user=developer
-ansible_password=C1sco12345
-ansible_connection=network_cli
-ansible_network_os=ios
-ansible_port=22
