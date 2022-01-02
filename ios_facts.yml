@@ -4,6 +4,8 @@
   connection: network_cli
 
   tasks:
+   - debug:
+        var: ansible_facts
    - name: Gather IOS Facts
      ios_facts: 
        gather_subset: all
