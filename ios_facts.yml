@@ -1,4 +1,4 @@
 ---
 - name: Test IOS Facts
   hosts: cisco
-  
+  connection: network_cli
