@@ -19,6 +19,4 @@ collections:
     
   - name: community.general
     
-  - name: ansible.tower
-    
   - name: community.crypto
