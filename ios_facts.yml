@@ -5,5 +5,11 @@
 
   tasks:
    - name: Gather IOS Facts
-    
+     ios_facts: 
+       gather_subset: all
+     register: all_subset
+   
+   - name: Print Subset All
+     debug:
+       var: all_subset
    
