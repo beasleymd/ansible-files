@@ -23,3 +23,5 @@ ansible_connection=network_cli
 ansible_network_os=ios
 ansible_user=admin
 ansible_password=c1sc0
+ansible_become=yes
+ansible_become_method=enable
