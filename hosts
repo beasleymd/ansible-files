@@ -1,18 +1,18 @@
 [routers]
-192.168.1.55
+EdgeLabRouter ansible_host=192.168.1.55
 
 [switches]
-10.0.0.100
-10.0.1.100
+Switch_A_3850 ansible_host=10.0.0.100
+Switch_B_3850 ansible_host=10.0.1.100
 
 [Switch_A_3850]
-10.0.0.100
+Switch_A_3850 ansible_host=10.0.0.100
 
 [Switch_B_3850]
-10.0.1.100
+Switch_B_3850 ansible_host=10.0.1.100
 
 [vcenter]
-192.168.1.52
+vCenter_Homelab ansible_host=192.168.1.52
 
 [cisco:children]
 routers
