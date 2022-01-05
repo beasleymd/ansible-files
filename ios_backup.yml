@@ -40,7 +40,7 @@
     # - show etherchannel summary 
       - show cdp neigh 
     # - sh switch stack-ports
-      - sh switch 
+    # - sh switch 
       - show environment all
       - show ip ospf int brief 
       - show ip ospf neigh 
