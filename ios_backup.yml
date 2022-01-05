@@ -1,16 +1,5 @@
 ---
-- hosts: cisco
-  gather_facts: no
-
-
-  tasks:
-  - name: BACK UP CONFIG 
-    ios_config:
-      backup: yes
-
-
----
-## Playbook to get system time and append it to backup files
+## Playbook to get system time and add it to backup files
 
 - hosts: localhost
 
@@ -34,7 +23,6 @@
 - hosts: routers 
 
   tasks:
-
    - name: Backup  
      ios_command:
        commands: show run  
