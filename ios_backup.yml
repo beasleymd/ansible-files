@@ -26,7 +26,7 @@
 
    - name: Create Directory {{hostvars.localhost.DTG}}
      file:
-      path: ~/network-programmability/backups/{{hostvars.localhost.DTG}}
+      path: ~/etc/ansible/backups/{{hostvars.localhost.DTG}}
       state: directory
   run_once: true
 
@@ -40,10 +40,10 @@
        commands: show run  
      register: config
 
-   - name: Save output to ~/network-programmability/backups/
+   - name: Save output to ~/etc/ansible/backups/
      copy:
        content: "{{config.stdout[0]}}"
-       dest: "~/network-programmability/backups/{{hostvars.localhost.DTG}}/{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
+       dest: "~/etc/ansible/backups/{{hostvars.localhost.DTG}}/{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
        
 - hosts: routers 
 
@@ -75,15 +75,15 @@
    - name: "Put all the files together into one nice text file"
      template: 
        src: template.j2 
-       dest: "~/network-programmability/backups/{{hostvars.localhost.DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-showoutput.txt"
+       dest: "~/etc/ansible/backups/{{hostvars.localhost.DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-showoutput.txt"
 
 - hosts: switches
 
   tasks:
-   - name: Backup Catalyst Switch 
+   - name: Backup Cat3850 Switches 
 
      ios_config:
        backup: yes
        backup_options:
          filename: "{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
-         dir_path: /home/roger/network-programmability/backups/{{hostvars.localhost.DTG}}
+         dir_path: ~/etc/ansible/backups/{{hostvars.localhost.DTG}}
