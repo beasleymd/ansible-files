@@ -24,7 +24,7 @@
 
   tasks:
    - name: Backup  
-     ios_command:
+     cisco.ios.ios_command:
        commands: show run  
      register: config
 
@@ -56,7 +56,7 @@
 
   tasks:
    - name: Run the SHOW commands and save output 
-     ios_command:
+     cisco.ios.ios_command:
        commands: "{{ command_list }}"
      register: showoutput
 
