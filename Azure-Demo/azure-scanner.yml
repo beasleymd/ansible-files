@@ -1,0 +1,9 @@
+---
+- name: Scan provisioned machine
+  hosts: "{{ vm_name }}"
+  gather_facts: false
+  vars:
+  tasks:
+  - name: run the scanner
+    debug:
+      msg: Scan machine and generate reports
