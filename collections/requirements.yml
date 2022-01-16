@@ -7,8 +7,6 @@ collections:
   
   - name: cisco.ios
   
-  - name: cisco.iosr
-  
   - name: cisco.nxos
   
   - name: arista.eos
