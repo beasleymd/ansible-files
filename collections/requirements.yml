@@ -21,7 +21,7 @@ collections:
     
   - name: community.aws
     
-  - name: servicenow.itsm
+  - name: servicenow.servicenow
     
   - name: community.general
     
