@@ -20,7 +20,9 @@ collections:
   - name: community.aws
     
   - name: servicenow.servicenow
-    
+  
+  - name: servicenow.itsm
+  
   - name: community.general
     
   - name: community.crypto
