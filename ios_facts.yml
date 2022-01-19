@@ -1,5 +1,5 @@
 ---
-- name: gather information from routers
+- name: gather information from cisco devices
   hosts: cisco
   gather_facts: no
 
