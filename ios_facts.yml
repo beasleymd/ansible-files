@@ -1,17 +1,8 @@
 ---
-- name: Test IOS Facts
+- name: gather information from routers
   hosts: cisco
-  connection: network_cli
+  gather_facts: no
 
   tasks:
-   - debug:
-        var: ansible_facts
-   - name: Gather IOS Facts
-     ios_facts: 
-       gather_subset: all
-     register: all_subset
-   
-   - name: Print Subset All
-     debug:
-       var: all_subset
-   
+    - name: gather cisco facts
+      ios_facts:
