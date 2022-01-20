@@ -20,7 +20,7 @@
   run_once: true
 
 
-- hosts: routers 
+- hosts: cisco 
 
   tasks:
    - name: Backup  
@@ -33,26 +33,26 @@
        content: "{{config.stdout[0]}}"
        dest: "~/etc/ansible/backups/{{hostvars.localhost.DTG}}/{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
        
-- hosts: routers 
+- hosts: cisco 
 
   vars:
     command_list:
     # - show etherchannel summary 
-      - show cdp neighbors 
+    # - show cdp neighbors 
     # - sh switch stack-ports
     # - sh switch 
     # - show environment all
-      - show ip ospf int brief 
-      - show ip ospf neighbors 
-      - show cdp neighbors detail
-      - show version 
+    # - show ip ospf int brief 
+    # - show ip ospf neighbors 
+    # - show cdp neighbors detail
+    # - show version 
     # - show license usage 
     # - show clock
     # - show users
     # - show boot
     # - show int status | inc connected
     # - show arp
-      - show ip interface brief
+    # - show ip interface brief
 
   tasks:
    - name: Run the SHOW commands and save output 
@@ -65,26 +65,3 @@
        src: template.j2 
        dest: "~/etc/ansible/backups/{{hostvars.localhost.DTG}}/{{ inventory_hostname }}-{{hostvars.localhost.DTG}}-showoutput.txt"
 
-
-- hosts: switches
-
-  tasks:
-   - name: Backup  
-     cisco.ios.ios_command:
-       commands: show run  
-     register: config
-
-   - name: Save output to ~/etc/ansible/backups/
-     copy:
-       content: "{{config.stdout[0]}}"
-       dest: "~/etc/ansible/backups/{{hostvars.localhost.DTG}}/{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
-
-- hosts: switches
-
-  tasks:
-   - name: Backup Cat3850 Switches 
-     ios_config:
-       backup: yes
-       backup_options:
-         filename: "{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
-         dir_path: ~/etc/ansible/backups/{{hostvars.localhost.DTG}}
