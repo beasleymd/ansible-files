@@ -1,5 +1,5 @@
 [routers]
-EdgeLabRouter ansible_host=192.168.1.55
+EdgeLabRouter ansible_host=10.0.0.1
 
 [switches]
 Switch_A_3850 ansible_host=10.0.0.100
