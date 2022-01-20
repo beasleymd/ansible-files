@@ -67,6 +67,20 @@
 
 
 - hosts: switches
+
+  tasks:
+   - name: Backup  
+     cisco.ios.ios_command:
+       commands: show run  
+     register: config
+
+   - name: Save output to ~/etc/ansible/backups/
+     copy:
+       content: "{{config.stdout[0]}}"
+       dest: "~/etc/ansible/backups/{{hostvars.localhost.DTG}}/{{inventory_hostname}}-{{hostvars.localhost.DTG}}-config.txt"
+
+- hosts: switches
+
   tasks:
    - name: Backup Cat3850 Switches 
      ios_config:
