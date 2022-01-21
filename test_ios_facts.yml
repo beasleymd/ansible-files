@@ -3,10 +3,11 @@
   hosts: cisco
   tasks:
     - debug:
-    - name: Gather IOS Facts
+        var: ansible_facts
+    - name: Gather IOS Facts 02
       ios_facts:
         gather_subset: all
       register: all_subset
-    - name: Print Subset All
+    - name: Print Subset All 03
       debug:
         var: all_subset
