@@ -2,13 +2,13 @@
 - hosts: cisco
   gather_facts: false
   vars:
-    git_branch: /etc/ansible/Backups
+    git_branch: /beasleymd/Backups
 tasks:
 ---
 - hosts: cisco
   gather_facts: false
   vars:
-    git_branch: /etc/ansible/Backups
+    git_branch: /beasleymd/Backups
 tasks:
   - name: switch to target branch
     command: git checkout "{{git_branch}}"
@@ -31,7 +31,7 @@ tasks:
     - name: copy Running config to backup folder
       copy:
         content: "{{ ios_cmd.stdout[0] }}"
-        dest: "/etc/ansible/Backups/cisco_bkup.txt"
+        dest: "/beasleymd/Backups/cisco_bkup.txt"
   - name: Check the directory status
     command: git status
     args:
