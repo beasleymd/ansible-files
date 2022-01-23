@@ -4,12 +4,6 @@
   vars:
     git_branch: https://github.com/beasleymd/Backups.git
 tasks:
----
-- hosts: cisco
-  gather_facts: false
-  vars:
-    git_branch: https://github.com/beasleymd/Backups.git
-tasks:
   - name: switch to target branch
     command: git checkout "{{git_branch}}"
     args:
