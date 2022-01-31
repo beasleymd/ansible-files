@@ -8,6 +8,7 @@
       git:
         repo: "{ git_branch }"
         dest: /tmp/backup
+      delegate_to: localhost
     
     #- name: Just ensuring the repo checkout exists
     #  ansible.builtin.git:
