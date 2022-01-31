@@ -1,0 +1,32 @@
+collections:
+  - name: community.vmware
+  
+  - name: vyos.vyos
+  
+  - name: cisco.asa
+  
+  - name: cisco.ios
+  
+  - name: cisco.iosxr
+  
+  - name: cisco.nxos
+  
+  - name: arista.eos
+
+  - name: ansible.netcommon
+  
+  - name: google.cloud
+   
+  - name: amazon.aws
+    
+  - name: community.aws
+    
+  - name: servicenow.servicenow
+  
+  - name: servicenow.itsm
+  
+  - name: community.general
+    
+  - name: community.crypto
+  
+  - name: azure.azcollection

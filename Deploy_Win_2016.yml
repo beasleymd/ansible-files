@@ -1,6 +1,5 @@
 ---
-- name: Create a RHEL 8 VM from Template
-  hosts: localhost
+- hosts: localhost
   gather_facts: no
   connection: local
   collections: 
@@ -14,13 +13,13 @@
         username: administrator@vcenter.mdblab
         password: Vmware1!
         validate_certs: no      
-        name: Sample_RHEL_VM
+        name: Sample_Win_2016_VM
         state: poweredon
-        template: RHEL_Template
+        template: Win_2016_template
         datacenter: mdblabdatacenter
         folder: VM_Folder
         disk:
-        - size_gb: 40
+        - size_gb: 80
           type: thin
           datastore: datastore1
         # Add another disk from an existing VMDK

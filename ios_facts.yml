@@ -1,0 +1,8 @@
+---
+- name: gather information from cisco devices
+  hosts: cisco
+  gather_facts: no
+
+  tasks:
+    - name: gather cisco facts
+      ios_facts:

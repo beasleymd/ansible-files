@@ -1,6 +1,6 @@
 ---
 - name: Show Version and Interfaces
-  hosts: switches
+  hosts: cisco
   connection: network_cli
   gather_facts: no
 

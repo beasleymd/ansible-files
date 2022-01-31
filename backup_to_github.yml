@@ -1,0 +1,45 @@
+---
+- hosts: cisco
+  gather_facts: false
+  vars:
+    git_branch: https://github.com/beasleymd/Backups.git
+tasks:
+  - name: switch to target branch
+    command: git checkout "{{git_branch}}"
+    args:
+      chdir: {{ git_branch }}
+    changed_when: false
+  - name: Syncronize with remote branch
+    command: git pull origin master
+    args:
+      chdir: {{ git_branch }}
+    changed_when: false
+    delegate_to: localhost
+    run_once: yes
+  - name: Get Running Config
+    block:
+    - name: Get show running
+      ios_command:
+        commands: show running-config
+      register: ios_cmd
+    - name: copy Running config to backup folder
+      copy:
+        content: "{{ ios_cmd.stdout[0] }}"
+        dest: "https://github.com/beasleymd/Backups.git/cisco_bkup.txt"
+  - name: Check the directory status
+    command: git status
+    args:
+      chdir: {{ git_branch }}
+    register: changes
+    changed_when: false
+    delegate_to: localhost
+    run_once: yes
+  - name: Add files to Git staging area, commit and push
+    shell: |
+      git add .
+      git commit -m "Configuration Backup"
+      git push origin
+    args:
+      chdir: {{ git_branch }}
+    delegate_to: localhost
+    run_once: yes

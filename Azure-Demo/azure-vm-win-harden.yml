@@ -1,0 +1,20 @@
+---
+- name: Harden windows hosts in Azure
+  hosts: "{{ vm_name }}"
+  gather_facts: false
+  vars:
+  tasks:
+  - name: block for windows hardening
+    when: os_type == "windows"
+    block:
+      - name: win shell to ping self
+        win_shell: ping 127.0.0.1
+        register: ping_res
+
+      - name: print ping results
+        debug:
+          var: ping_res.stdout_lines
+
+      - name: import task 1
+        debug:
+          msg: windows block 1 for hardening
