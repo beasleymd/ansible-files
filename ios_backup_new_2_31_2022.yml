@@ -6,7 +6,7 @@
   tasks:
     - name: Read-write git checkout from github
       git:
-        repo: "{ git_branch }"
+        repo: "{{ git_branch }}"
         dest: /tmp/backup
       delegate_to: localhost
     
