@@ -5,7 +5,7 @@
     git_branch: https://github.com/beasleymd/Backups.git
 tasks:
   - name: Read-write git checkout from github
-    ansible.builtin.git:
+    git:
       repo: "{ git_branch }"
       dest: /tmp/backup
   
