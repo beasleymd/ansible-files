@@ -1,6 +1,6 @@
 ---
 - name: Show Running Config
-  hosts: switches
+  hosts: cisco
   connection: network_cli
   gather_facts: no
 
