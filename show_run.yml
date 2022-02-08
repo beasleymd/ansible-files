@@ -7,7 +7,8 @@
   tasks:
   - name: configure interface settings
      cisco.ios.ios_config:
-     commands: show run
+     lines: 
+     - show run
 
   - name: Print out running config
     debug:
