@@ -5,10 +5,11 @@
   gather_facts: no
 
   tasks:
-  - name: configure interface settings
+  - name: show running config
      cisco.ios.ios_config:
-     lines: 
-     - show run
+       lines: 
+       - show run
+     register: showrun
 
   - name: Print out running config
     debug:
