@@ -1,7 +1,8 @@
 ---
 - name: Show Running Config
   hosts: routers
-  ansible_connection: network_cli
+  vars: 
+    ansible_connection: network_cli
   gather_facts: no
 
   tasks:
