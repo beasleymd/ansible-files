@@ -1,6 +1,6 @@
 ---
 - name: Show Running Config
-  hosts: routers 
+  hosts: switches 
   ansible_connection: network_cli
   gather_facts: no
 
