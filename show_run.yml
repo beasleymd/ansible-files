@@ -6,10 +6,10 @@
 
   tasks:
   - name: show running config
-     cisco.ios.ios_config:
-       lines: 
-       - show run
-     register: showrun
+    cisco.ios.ios_config:
+      lines: 
+      - show run
+    register: showrun
 
   - name: Print out running config
     debug:
