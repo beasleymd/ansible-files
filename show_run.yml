@@ -6,15 +6,18 @@
   gather_facts: no
 
   tasks:
-  - name: show running config
-    cisco.ios.ios_command:
-      commands: 
-      - show running-config
-    register: showrun
+  - name: show running config and back up
+    ios_config:
+      backup: true
+    register: config_output
+     #commands: 
+     #- show running-config
+   #register: showrun
 
   - name: Print out running config
     debug:
-      var: showrun.stdout   
+      var: config_output.stdout 
+     #var: showrun.stdout   
 
 
 
