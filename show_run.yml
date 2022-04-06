@@ -1,7 +1,7 @@
 ---
 - name: Show Running Config
   hosts: switches 
-  connection: network_cli
+  #connection: network_cli
   gather_facts: no
 
   tasks:
