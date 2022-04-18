@@ -1,6 +1,6 @@
 ---
 - name: gather information from cisco devices
-  hosts: switches
+  hosts: cisco
   gather_facts: no
 
   tasks:
