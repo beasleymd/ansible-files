@@ -37,22 +37,22 @@
 
   vars:
     command_list:
-    # - show etherchannel summary 
-    # - show cdp neighbors 
-    # - sh switch stack-ports
-    # - sh switch 
-    # - show environment all
-    # - show ip ospf int brief 
-    # - show ip ospf neighbors 
-    # - show cdp neighbors detail
-    # - show version 
-    # - show license usage 
-    # - show clock
-    # - show users
-    # - show boot
-    # - show int status | inc connected
-    # - show arp
-    # - show ip interface brief
+    - show etherchannel summary 
+    - show cdp neighbors 
+    - sh switch stack-ports
+    - sh switch 
+    - show environment all
+    - show ip ospf int brief 
+    - show ip ospf neighbors 
+    - show cdp neighbors detail
+    - show version 
+    - show license usage 
+    - show clock
+    - show users
+    - show boot
+    - show int status | inc connected
+    - show arp
+    - show ip interface brief
 
   tasks:
    - name: Run the SHOW commands and save output 
