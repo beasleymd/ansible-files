@@ -13,6 +13,9 @@ localhost
 [Switch-B-3850]
 10.0.1.100
 
+[ZTD_Switch]
+10.0.0.200
+
 [cisco:children]
 routers
 switches
