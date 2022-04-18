@@ -37,13 +37,13 @@
 
   vars:
     command_list:
-    - show etherchannel summary 
+    # - show etherchannel summary 
     - show cdp neighbors 
     - sh switch stack-ports
     - sh switch 
     - show environment all
     - show ip ospf int brief 
-    - show ip ospf neighbors 
+    # - show ip ospf neighbors 
     - show cdp neighbors detail
     - show version 
     - show license usage 
