@@ -11,6 +11,10 @@ Switch_A_3850 ansible_host=10.0.0.100
 [Switch_B_3850]
 Switch_B_3850 ansible_host=10.0.1.100
 
+
+[ZTD_Switch]
+ZTD_Switch ansible_host=10.0.0.200
+
 [vcenter]
 vCenter_Homelab ansible_host=192.168.1.52
 
