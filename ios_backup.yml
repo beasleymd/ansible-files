@@ -49,7 +49,7 @@
     # - show license usage 
     - show clock
     - show users
-    - show boot
+    # - show boot
     - show int status | inc connected
     - show arp
     - show ip interface brief
