@@ -1,0 +1,16 @@
+---
+- name: Parse ACL
+  arista.eos.eos_acls:
+    state: parsed
+    running_config: "{{ acl_config }}" #Found in host_vars/{{device}}.yml
+  register: eos_acl
+ 
+- name: Check for and Fix Drift
+  arista.eos.eos_acls:
+    state: replaced
+    config: "{{ eos_acl.parsed }}" 
+
+- name: Configure new ACL if not present
+  arista.eos.eos_acls:
+    state: merged
+    config: "{{ eos_acl.parsed }}"

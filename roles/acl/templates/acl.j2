@@ -1,0 +1,9 @@
+### ACL ###
+acl_config: |
+{% for line in existing_acl %}
+ {% if loop.first %}
+ {{ line }}
+ {% else %}
+  {{ line }}
+ {% endif %}
+{% endfor %}
