@@ -1,0 +1,9 @@
+---
+- name: configure ACLs
+  hosts: switches
+  gather_facts: no
+
+  tasks:
+    - name: Merge required ACLs
+      include_role:
+        name: acl
