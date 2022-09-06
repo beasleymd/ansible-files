@@ -24,6 +24,8 @@ GNS3_C_R1 ansible_host=192.168.1.96
 [cisco:children]
 routers
 switches
+gns3_equip
+ZTD_Switch
 
 [cisco:vars]
 ansible_connection=network_cli
