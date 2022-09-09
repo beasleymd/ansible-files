@@ -12,7 +12,9 @@ collections:
   - name: cisco.nxos
   
   - name: arista.eos
-
+  
+  - name: junipernetworks.junos
+  
   - name: ansible.netcommon
   
   - name: google.cloud
