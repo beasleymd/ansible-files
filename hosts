@@ -40,3 +40,13 @@ ansible_ssh_user=admin
 ansible_ssh_pass=c1sc0
 ansible_become=yes
 ansible_become_method=enable
+
+[juniper:vars]
+ansible_connection=netconf
+ansible_network_os=junipernetworks.junos
+ansible_netconf_user=admin
+ansible_netconf_pass=jun0s
+ansible_ssh_user=admin
+ansible_ssh_pass=jun0s
+ansible_become=yes
+ansible_become_method=enable
