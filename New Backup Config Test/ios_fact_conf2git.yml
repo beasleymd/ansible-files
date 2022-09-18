@@ -1,0 +1,77 @@
+---
+- hosts: ios
+  gather_facts: yes
+  connection: network_cli
+  become: yes
+  become_method: enable
+  ignore_errors: yes
+
+  vars:
+    #authentication_provider: normal (tacacs) | local | alternate
+    authentication_provider: normal
+    git_repo: conf2git
+    git_sync: enabled
+
+  tasks:
+  - name: account $HOME
+    shell: "echo $HOME"
+    register: account_homedir
+    changed_when: false
+    check_mode: no
+
+  - name: obtain login credentials
+    include_vars: "{{account_homedir.stdout}}/.ansible/auth/secrets.yml"
+
+  - name: Set Username and Password
+    set_fact:
+      remote_user: "{{ creds['username'] }}"
+      ansible_ssh_pass: "{{ creds['password'] }}"
+    when: authentication_provider == "normal"
+
+  - name: define authentication provider User Local {{ local_creds['username'] }}
+    set_fact:
+      remote_user: "{{ local_creds['username'] }}"
+      ansible_ssh_pass: "{{ local_creds['password'] }}"
+    when: authentication_provider == "local"
+
+  - name: define authentication provider Alternate {{ alt_creds['username'] }}
+    set_fact:
+      remote_user: "{{ alt_creds['username'] }}"
+      ansible_ssh_pass: "{{ alt_creds['password'] }}"
+    when: authentication_provider == "alternate"
+
+  - name: Gather Facts
+    ios_facts:
+      gather_subset:
+        - "!hardware"
+    register: config_response
+
+  - name: Hostname for "{{ inventory_hostname }}"
+    debug: var=ansible_net_hostname
+
+  - name: Hostname for "{{ inventory_hostname }}"
+    debug: var=ansible_net_config
+#
+  - name: Version for "{{ inventory_hostname }}"
+    debug: var=ansible_net_version
+
+  - name: CDP for "{{ inventory_hostname }}"
+    debug: var=ansible_net_neighbors
+
+  - name: Create target directory
+    file: path={{ git_repo }}/{{ inventory_hostname }} state=directory mode=0755
+
+  - name: Generate configuration files
+    template:
+       src=roles/discovery/templates/discovery.j2
+       dest={{ git_repo }}/{{ inventory_hostname }}/{{ inventory_hostname }}.yml
+ 
+  - name: Sync Changes into "{{ git_repo }}"command: "{{ item }}"
+    with_items:
+      - pwd
+      - git add .
+      - git commit -m "Updates {{ansible_date_time.date}}"
+      - git push
+    args:
+      chdir: "{{ git_repo }}"
+    when: git_sync == "enabled"
