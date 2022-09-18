@@ -1,5 +1,5 @@
 ---
-- hosts: ios
+- hosts: routers
   gather_facts: yes
   connection: network_cli
   become: yes
