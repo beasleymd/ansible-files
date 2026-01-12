@@ -1,0 +1,87 @@
+---
+- name: Router Firmware Management
+  hosts: routers
+  gather_facts: no
+
+  vars:
+    report_dir: "./firmware_reports"
+
+  tasks:
+    - name: Create report directory
+      file:
+        path: "{{ report_dir }}"
+        state: directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Gather router facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - hardware
+          - config
+
+    - name: Get current boot configuration
+      cisco.ios.ios_command:
+        commands:
+          - show bootvar
+      register: boot_config
+
+    - name: Get flash directory listing
+      cisco.ios.ios_command:
+        commands:
+          - dir flash:*.bin
+      register: flash_dir
+
+    - name: Get current version details
+      cisco.ios.ios_command:
+        commands:
+          - show version | include IOS
+      register: version_info
+
+    - name: Parse firmware images from flash
+      set_fact:
+        firmware_images: "{{ flash_dir.stdout[0] | regex_findall('\\d+\\s+-\\w+\\s+(\\d+)\\s+\\w+\\s+\\d+\\s+\\d+:\\d+:\\d+\\s+[+-]\\d+:\\d+\\s+(\\S+\\.bin)') }}"
+
+    - name: Display current firmware status
+      debug:
+        msg:
+          - "===== Firmware Status for {{ inventory_hostname }} ====="
+          - "Current Version: {{ ansible_net_version }}"
+          - "Model: {{ ansible_net_model }}"
+          - "Serial: {{ ansible_net_serialnum }}"
+          - "Image: {{ ansible_net_image }}"
+          - "Boot Configuration:"
+          - "{{ boot_config.stdout[0] }}"
+          - ""
+          - "Available Firmware Images in Flash:"
+          - "{{ flash_dir.stdout[0] }}"
+
+    - name: Create firmware report
+      template:
+        src: templates/firmware_report.j2
+        dest: "{{ report_dir }}/{{ inventory_hostname }}_firmware_report.txt"
+      delegate_to: localhost
+
+    - name: Check if boot system needs updating (optional)
+      debug:
+        msg: "To set boot system, uncomment the task below and specify desired firmware image"
+
+    # Uncomment and modify the following task to set boot system
+    # - name: Set boot system
+    #   cisco.ios.ios_config:
+    #     lines:
+    #       - no boot system
+    #       - boot system flash:isr4300-universalk9.17.12.06.SPA.bin
+    #     save_when: modified
+    #   when: desired_firmware_image is defined
+
+    # Uncomment to verify boot configuration after change
+    # - name: Verify boot configuration
+    #   cisco.ios.ios_command:
+    #     commands:
+    #       - show bootvar
+    #   register: new_boot_config
+
+    # - name: Display new boot configuration
+    #   debug:
+    #     var: new_boot_config.stdout_lines

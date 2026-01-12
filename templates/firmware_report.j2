@@ -1,0 +1,69 @@
+================================================
+Router Firmware Management Report
+================================================
+
+Device: {{ inventory_hostname }}
+IP Address: {{ ansible_host }}
+Report Generated: {{ ansible_date_time.iso8601 }}
+
+================================================
+HARDWARE INFORMATION
+================================================
+Model: {{ ansible_net_model }}
+Serial Number: {{ ansible_net_serialnum }}
+Hostname: {{ ansible_net_hostname }}
+
+================================================
+CURRENT FIRMWARE
+================================================
+IOS Version: {{ ansible_net_version }}
+Current Boot Image: {{ ansible_net_image }}
+
+================================================
+BOOT CONFIGURATION
+================================================
+{{ boot_config.stdout[0] }}
+
+================================================
+AVAILABLE FIRMWARE IN FLASH
+================================================
+{{ flash_dir.stdout[0] }}
+
+================================================
+FIRMWARE ANALYSIS
+================================================
+{% if firmware_images is defined and firmware_images | length > 0 %}
+Found {{ firmware_images | length }} firmware image(s):
+{% for image in firmware_images %}
+  - {{ image[1] }} ({{ (image[0] | int / 1048576) | round(2) }} MB)
+{% endfor %}
+{% else %}
+Unable to parse firmware images from flash directory listing.
+{% endif %}
+
+================================================
+RECOMMENDATIONS
+================================================
+1. Verify current running firmware matches boot configuration
+2. Review available firmware versions against Cisco advisories
+3. Ensure sufficient flash space before firmware upgrades
+4. Always backup configuration before firmware changes
+5. Use "show version" to verify running firmware
+6. Use "show bootvar" to verify boot configuration
+
+================================================
+NEXT STEPS (if upgrading)
+================================================
+1. Backup current configuration
+2. Verify new firmware image integrity (MD5 hash)
+3. Copy firmware to flash if not present
+4. Set boot system to new firmware:
+   conf t
+   no boot system
+   boot system flash:<new-firmware-image>
+   end
+   write memory
+5. Reload router at appropriate maintenance window
+6. Verify new firmware after reload
+
+================================================

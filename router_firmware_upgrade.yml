@@ -1,0 +1,152 @@
+---
+- name: Router Firmware Upgrade Process
+  hosts: routers
+  gather_facts: no
+
+  vars:
+    # Define these variables for your upgrade
+    # firmware_image: "isr4300-universalk9.17.12.06.SPA.bin"
+    # firmware_md5: "abc123def456..."  # Optional but recommended
+    # reboot_required: false  # Set to true to auto-reboot after configuration
+
+  tasks:
+    - name: Verify required variables are defined
+      assert:
+        that:
+          - firmware_image is defined
+        fail_msg: "Please define firmware_image variable"
+
+    - name: Gather router facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - hardware
+
+    - name: Get flash directory
+      cisco.ios.ios_command:
+        commands:
+          - dir flash:
+      register: flash_contents
+
+    - name: Check if firmware image exists in flash
+      set_fact:
+        firmware_exists: "{{ firmware_image in flash_contents.stdout[0] }}"
+
+    - name: Display firmware status
+      debug:
+        msg: "Firmware image {{ firmware_image }} {{ 'exists' if firmware_exists else 'does NOT exist' }} in flash"
+
+    - name: Verify MD5 hash if provided
+      block:
+        - name: Get MD5 hash of firmware image
+          cisco.ios.ios_command:
+            commands:
+              - verify /md5 flash:{{ firmware_image }}
+          register: md5_check
+
+        - name: Verify MD5 matches
+          assert:
+            that:
+              - firmware_md5 in md5_check.stdout[0]
+            fail_msg: "MD5 hash mismatch! Firmware image may be corrupted."
+            success_msg: "MD5 hash verified successfully"
+      when:
+        - firmware_exists
+        - firmware_md5 is defined
+
+    - name: Get current boot configuration
+      cisco.ios.ios_command:
+        commands:
+          - show bootvar
+      register: current_boot
+
+    - name: Display current boot configuration
+      debug:
+        msg: "{{ current_boot.stdout_lines }}"
+
+    - name: Backup current running configuration
+      cisco.ios.ios_config:
+        backup: yes
+        backup_options:
+          filename: "{{ inventory_hostname }}_pre_upgrade_{{ ansible_date_time.epoch }}.cfg"
+          dir_path: "./backups"
+
+    - name: Configure boot system
+      cisco.ios.ios_config:
+        lines:
+          - no boot system
+          - boot system flash:{{ firmware_image }}
+        save_when: modified
+      register: boot_config_result
+
+    - name: Verify new boot configuration
+      cisco.ios.ios_command:
+        commands:
+          - show bootvar
+      register: new_boot
+
+    - name: Display new boot configuration
+      debug:
+        msg:
+          - "Boot configuration has been updated:"
+          - "{{ new_boot.stdout_lines }}"
+
+    - name: Save configuration
+      cisco.ios.ios_command:
+        commands:
+          - write memory
+
+    - name: Display next steps
+      debug:
+        msg:
+          - "=========================================="
+          - "Boot system configured successfully!"
+          - "Current boot image: {{ firmware_image }}"
+          - "=========================================="
+          - "NEXT STEPS:"
+          - "1. Verify the boot configuration above"
+          - "2. Schedule maintenance window"
+          - "3. Reload the router to boot from new firmware"
+          - "4. Use 'reload' command or set reboot_required=true"
+          - "=========================================="
+
+    - name: Prompt for reload (manual step)
+      pause:
+        prompt: "Press ENTER to continue without reloading, or Ctrl+C then A to abort"
+      when: not (reboot_required | default(false))
+
+    - name: Reload router
+      cisco.ios.ios_command:
+        commands:
+          - command: reload
+            prompt: 'Proceed with reload? [confirm]'
+            answer: "\r"
+      when: reboot_required | default(false)
+      async: 1
+      poll: 0
+      ignore_errors: yes
+
+    - name: Wait for router to reload
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        delay: 60
+        timeout: 600
+        state: started
+      delegate_to: localhost
+      when: reboot_required | default(false)
+
+    - name: Verify new firmware version after reload
+      cisco.ios.ios_facts:
+        gather_subset:
+          - hardware
+      when: reboot_required | default(false)
+
+    - name: Display post-upgrade firmware version
+      debug:
+        msg:
+          - "=========================================="
+          - "Firmware upgrade completed!"
+          - "New firmware version: {{ ansible_net_version }}"
+          - "Running image: {{ ansible_net_image }}"
+          - "=========================================="
+      when: reboot_required | default(false)
