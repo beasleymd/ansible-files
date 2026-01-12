@@ -38,8 +38,8 @@ aaa accounting commands 15 default start-stop group tacacs+
 
 aaa session-id common
 
-clock timezone CST -6 0
-clock summer-time CDT recurring
+clock timezone EST -5 0
+clock summer-time EDT recurring
 
 ip domain name mdblab.com
 
