@@ -116,6 +116,26 @@ interface GigabitEthernet0/1/3
  shutdown
 exit
 
+interface GigabitEthernet0/1/4
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/5
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/6
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/7
+ description Unused
+ shutdown
+exit
+
 interface GigabitEthernet0
  description Management Interface
  vrf forwarding Mgmt-intf
