@@ -1,0 +1,146 @@
+---
+- name: Upgrade IOS on EdgeLabRouter-1 from USB Flash Drive
+  hosts: EdgeLabRouter-1
+  gather_facts: no
+  vars:
+    new_ios_image: "isr4300-universalk9.17.12.06.SPA.bin"
+    usb_device: "usbflash0:"
+
+  tasks:
+    - name: Check file systems available
+      cisco.ios.ios_command:
+        commands:
+          - show file systems
+      register: filesystems_output
+
+    - name: Display file systems
+      debug:
+        var: filesystems_output.stdout_lines
+
+    - name: Check USB flash drive contents
+      cisco.ios.ios_command:
+        commands:
+          - dir {{ usb_device }}
+      register: usb_contents
+
+    - name: Display USB contents
+      debug:
+        var: usb_contents.stdout_lines
+
+    - name: Check current flash contents
+      cisco.ios.ios_command:
+        commands:
+          - dir flash:
+      register: flash_contents
+
+    - name: Display flash contents
+      debug:
+        var: flash_contents.stdout_lines
+
+    - name: Check flash space
+      cisco.ios.ios_command:
+        commands:
+          - show flash: | include bytes
+      register: flash_space
+
+    - name: Display flash space
+      debug:
+        var: flash_space.stdout_lines
+
+    - name: Find old IOS images in flash
+      cisco.ios.ios_command:
+        commands:
+          - dir flash:*.bin
+      register: old_ios_images
+      ignore_errors: yes
+
+    - name: Display old IOS images
+      debug:
+        var: old_ios_images.stdout_lines
+
+    - name: Delete old IOS images from flash (manual step - review output above)
+      cisco.ios.ios_command:
+        commands:
+          - command: "delete /force /recursive flash:*.bin"
+      when: old_ios_images.stdout_lines | length > 0
+      tags:
+        - delete_old_files
+        - never
+
+    - name: Copy new IOS image from USB to flash
+      cisco.ios.ios_command:
+        commands:
+          - command: "copy {{ usb_device }}{{ new_ios_image }} flash:{{ new_ios_image }}"
+            prompt:
+              - "Destination filename"
+            answer:
+              - "{{ new_ios_image }}"
+      register: copy_result
+      timeout: 3600
+      tags:
+        - copy_ios
+
+    - name: Display copy result
+      debug:
+        var: copy_result.stdout_lines
+      tags:
+        - copy_ios
+
+    - name: Verify new IOS image in flash
+      cisco.ios.ios_command:
+        commands:
+          - dir flash:{{ new_ios_image }}
+      register: verify_image
+
+    - name: Display verification
+      debug:
+        var: verify_image.stdout_lines
+
+    - name: Configure boot system with new IOS image
+      cisco.ios.ios_config:
+        lines:
+          - no boot system
+          - boot system flash:{{ new_ios_image }}
+      tags:
+        - configure_boot
+
+    - name: Save running config to startup config
+      cisco.ios.ios_command:
+        commands:
+          - write memory
+      tags:
+        - save_config
+
+    - name: Show boot configuration
+      cisco.ios.ios_command:
+        commands:
+          - show boot
+      register: boot_config
+
+    - name: Display boot configuration
+      debug:
+        var: boot_config.stdout_lines
+
+    - name: Show running vs startup config status
+      cisco.ios.ios_command:
+        commands:
+          - show archive config differences system:running-config system:startup-config
+      register: config_diff
+      ignore_errors: yes
+
+    - name: Display config differences
+      debug:
+        var: config_diff.stdout_lines
+      when: config_diff is defined
+
+    - name: Reload router (manual step - uncomment when ready)
+      cisco.ios.ios_command:
+        commands:
+          - command: "reload"
+            prompt:
+              - "confirm"
+            answer:
+              - "y"
+      tags:
+        - reload
+        - never
