@@ -1,0 +1,81 @@
+EdgeLabRouter-1 IOS Upgrade Commands
+=====================================
+Target IOS: isr4300-universalk9.17.12.06.SPA.bin
+Source: USB Flash Drive
+
+STEP 1: Check Current State
+----------------------------
+enable
+show file systems
+dir usbflash0:
+dir flash:
+show flash: | include bytes
+
+
+STEP 2: Check Boot Configuration
+---------------------------------
+show boot
+show running-config | include boot
+
+
+STEP 3: Delete Old IOS Images
+------------------------------
+! WARNING: This deletes all .bin files in flash
+delete /force /recursive flash:*.bin
+
+! Or delete specific file (safer):
+! delete /force flash:<old-ios-filename.bin>
+
+! Verify deletion
+dir flash:
+
+
+STEP 4: Copy New IOS from USB to Flash
+---------------------------------------
+copy usbflash0:isr4300-universalk9.17.12.06.SPA.bin flash:isr4300-universalk9.17.12.06.SPA.bin
+
+! This will take several minutes - be patient!
+
+
+STEP 5: Verify Copy
+--------------------
+dir flash:
+verify /md5 flash:isr4300-universalk9.17.12.06.SPA.bin
+
+
+STEP 6: Configure Boot System
+------------------------------
+configure terminal
+no boot system
+boot system flash:isr4300-universalk9.17.12.06.SPA.bin
+exit
+
+
+STEP 7: Save Configuration
+---------------------------
+write memory
+copy running-config startup-config
+
+
+STEP 8: Verify Boot Configuration
+----------------------------------
+show boot
+show running-config | include boot
+
+
+STEP 9: Reload Router (when ready)
+-----------------------------------
+reload
+
+! When prompted:
+! System configuration has been modified. Save? [yes/no]: yes
+! Proceed with reload? [confirm]: <press Enter>
+
+
+NOTES:
+------
+- Make sure USB drive is connected before starting
+- The copy process can take 10-30 minutes depending on image size
+- Do NOT interrupt the copy process
+- Verify MD5 hash if you have it for the IOS image
+- After reload, use "show version" to verify new IOS version
