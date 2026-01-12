@@ -11,11 +11,18 @@ service timestamps log datetime msec localtime show-timezone
 service password-encryption
 service sequence-numbers
 
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+
 hostname EdgeLabRouter-1
 
 boot-start-marker
 boot system flash:isr4300-universalk9.17.12.06.SPA.bin
 boot-end-marker
+
+diagnostic bootup level minimal
+license boot level appxk9
+memory free low-watermark processor 100699
 
 vrf definition Mgmt-intf
  address-family ipv4
@@ -45,8 +52,18 @@ ip domain name mdblab.com
 
 login on-success log
 
+subscriber templating
+
+multilink bundle-name authenticated
+
 enable secret c1sc0
 username admin privilege 15 secret c1sc0
+
+redundancy
+ mode none
+exit
+
+vlan internal allocation policy ascending
 
 spanning-tree extend system-id
 
@@ -131,6 +148,8 @@ router ospf 1
 exit
 
 ip default-gateway 192.168.1.1
+ip forward-protocol nd
+ip tcp synwait-time 10
 
 no ip http server
 no ip http secure-server
@@ -176,13 +195,26 @@ ip ssh rsa keypair-name EdgeLabRouter.mdblab.com
 ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512 hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com
 ip scp server enable
 
+control-plane
+exit
+
 line con 0
  exec-timeout 30 0
  logging synchronous
  stopbits 1
 exit
 
-line vty 0 15
+line aux 0
+exit
+
+line vty 0 4
+ exec-timeout 15 0
+ login authentication VTY-LOGIN
+ transport input ssh
+ transport output ssh
+exit
+
+line vty 5 15
  exec-timeout 15 0
  login authentication VTY-LOGIN
  transport input ssh
