@@ -1,15 +1,9 @@
 [routers]
-EdgeLabRouter ansible_host=10.0.0.1
+ZTP-Router ansible_host=10.0.0.1
+EdgeLabRouter-1 ansible_host=10.0.0.100
+EdgeLabRouter-2 ansible_host=10.0.1.100
 
 [switches]
-Switch_A_3850 ansible_host=10.0.0.100
-Switch_B_3850 ansible_host=10.0.1.100
-
-[Switch_A_3850]
-Switch_A_3850 ansible_host=10.0.0.100
-
-[Switch_B_3850]
-Switch_B_3850 ansible_host=10.0.1.100
 
 [ZTD_Switch]
 ZTD_Switch ansible_host=10.0.0.200
