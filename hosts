@@ -3,6 +3,15 @@ EdgeLabRouter ansible_host=10.0.0.1
 EdgeLabRouter-1 ansible_host=192.168.1.55
 EdgeLabRouter-2 ansible_host=10.0.0.2
 
+[EdgeLabRouter]
+EdgeLabRouter ansible_host=10.0.0.1
+
+[EdgeLabRouter-1]
+EdgeLabRouter-1 ansible_host=192.168.1.55
+
+[EdgeLabRouter-2]
+EdgeLabRouter-2 ansible_host=10.0.0.2
+
 [switches]
 
 [ZTD_Switch]

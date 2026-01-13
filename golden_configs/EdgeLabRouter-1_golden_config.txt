@@ -1,0 +1,209 @@
+!
+! EdgeLabRouter-1 Golden Configuration
+! ISR4331/K9 - IOS 17.12.06
+! Management IP: 192.168.1.55
+! Created: 2026-01-13
+! Purpose: Primary edge router with WAN connectivity and internal networks
+!
+version 17.12
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+service sequence-numbers
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname EdgeLabRouter-1
+!
+boot-start-marker
+boot system bootflash:isr4300-universalk9.17.12.06.SPA.bin
+boot-end-marker
+!
+diagnostic bootup level minimal
+license boot level appxk9
+memory free low-watermark processor 100699
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+logging buffered 32768 informational
+no logging console
+aaa new-model
+!
+aaa authentication login default local
+aaa authentication login VTY-LOGIN local
+aaa authentication enable default enable
+aaa authorization exec default local
+aaa authorization commands 15 default local
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+!
+aaa session-id common
+clock timezone EST -5 0
+clock summer-time EDT recurring
+!
+ip domain name mdblab.com
+!
+login on-success log
+!
+subscriber templating
+!
+multilink bundle-name authenticated
+!
+enable secret 9 $9$<encrypted>
+!
+username admin privilege 15 secret 9 $9$<encrypted>
+!
+redundancy
+ mode none
+!
+vlan internal allocation policy ascending
+!
+spanning-tree extend system-id
+!
+interface GigabitEthernet0/0/0
+ description WAN Interface to AAP Network
+ ip address 192.168.1.55 255.255.255.0
+ ip nat outside
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ description Connection to EdgeLabRouter-2
+ ip address 10.0.0.1 255.255.255.0
+ ip nat inside
+ media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/0/2
+ description Reserved
+ no ip address
+ ip nat inside
+ shutdown
+ media-type sfp
+ negotiation auto
+!
+interface GigabitEthernet0/1/0
+ description Connection to Switch_B_3850
+ switchport mode access
+!
+interface GigabitEthernet0/1/1
+ description Connection to VLAN 200 device
+ switchport access vlan 200
+ switchport mode access
+!
+interface GigabitEthernet0/1/2
+ description Unused
+ shutdown
+!
+interface GigabitEthernet0/1/3
+ description Unused
+ shutdown
+!
+interface GigabitEthernet0/1/4
+ description Unused
+ shutdown
+!
+interface GigabitEthernet0/1/5
+ description Unused
+ shutdown
+!
+interface GigabitEthernet0/1/6
+ description Unused
+ shutdown
+!
+interface GigabitEthernet0/1/7
+ description Unused
+ shutdown
+!
+interface GigabitEthernet0
+ description Management Interface
+ vrf forwarding Mgmt-intf
+ no ip address
+ negotiation auto
+!
+interface Vlan1
+ description Connection to Switch_B_3850
+ ip address 10.0.1.1 255.255.255.0
+ ip nat inside
+!
+interface Vlan200
+ description Additional Network Segment
+ ip address 10.0.2.1 255.255.255.0
+ ip nat inside
+!
+router ospf 1
+ auto-cost reference-bandwidth 1000
+ network 0.0.0.0 255.255.255.255 area 0
+ default-information originate always
+!
+ip forward-protocol nd
+ip tcp synwait-time 10
+no ip http server
+no ip http secure-server
+!
+ip nat inside source list NAT-TRAFFIC interface GigabitEthernet0/0/0 overload
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/0 192.168.1.1
+ip route 0.0.0.0 0.0.0.0 192.168.1.1
+ip ssh bulk-mode 131072
+ip ssh rsa keypair-name EdgeLabRouter-1.mdblab.com
+ip ssh version 2
+ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512 hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com
+ip scp server enable
+!
+ip access-list extended NAT-TRAFFIC
+ 10 deny ip 10.0.0.0 0.0.255.255 192.168.1.0 0.0.0.255
+ 20 permit ip 10.0.0.0 0.0.255.255 any
+!
+logging host 192.168.1.8
+logging host 192.168.1.10
+!
+snmp-server group admin v3 auth
+snmp-server group monitor v3 auth
+snmp-server location Home Lab - Building 1
+snmp-server contact Network Admin
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps config
+snmp-server enable traps entity
+snmp-server enable traps syslog
+snmp-server host 192.168.1.10 public
+snmp-server host 192.168.1.8 public
+!
+tacacs server 192.168.1.100
+ address ipv4 192.168.1.100
+ key 7 012707075A08153C244F5C0C0D544541
+ timeout 10
+tacacs server 192.168.1.101
+ address ipv4 192.168.1.101
+ key 7 03305A08070C327F4B0A0B000343595F
+ timeout 10
+!
+control-plane
+!
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+ stopbits 1
+line aux 0
+line vty 0 4
+ exec-timeout 15 0
+ login authentication VTY-LOGIN
+ transport input ssh
+ transport output ssh
+line vty 5 15
+ exec-timeout 15 0
+ login authentication VTY-LOGIN
+ transport input ssh
+ transport output ssh
+!
+ntp server pool.ntp.org prefer
+ntp server time.cloudflare.com prefer
+ntp server time.nist.gov prefer
+!
+end
