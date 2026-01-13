@@ -1,0 +1,252 @@
+! EdgeLabRouter-2 Paste-Ready Golden Configuration
+! ISR4331/K9 - IOS 17.12.06
+! Management IP: 10.0.0.2
+! Password: c1sc0 (for enable secret and username admin)
+! Created: 2026-01-13
+
+configure terminal
+
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+service sequence-numbers
+
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+
+hostname EdgeLabRouter-2
+
+boot-start-marker
+boot system bootflash:isr4300-universalk9.17.12.06.SPA.bin
+boot-end-marker
+
+diagnostic bootup level minimal
+license boot level appxk9
+memory free low-watermark processor 100699
+
+vrf definition Mgmt-intf
+ address-family ipv4
+ exit-address-family
+ address-family ipv6
+ exit-address-family
+exit
+
+logging buffered 32768 informational
+no logging console
+
+aaa new-model
+aaa authentication login default local
+aaa authentication login VTY-LOGIN local
+aaa authentication enable default enable
+aaa authorization exec default local
+aaa authorization commands 15 default local
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+
+aaa session-id common
+
+clock timezone EST -5 0
+clock summer-time EDT recurring
+
+ip domain name mdblab.com
+
+login on-success log
+
+subscriber templating
+
+multilink bundle-name authenticated
+
+enable secret c1sc0
+username admin privilege 15 secret c1sc0
+
+redundancy
+ mode none
+exit
+
+vlan internal allocation policy ascending
+
+spanning-tree extend system-id
+
+interface GigabitEthernet0/0/0
+ description WAN Interface (Reserved)
+ no ip address
+ ip nat outside
+ shutdown
+ negotiation auto
+exit
+
+interface GigabitEthernet0/0/1
+ description Connection to EdgeLabRouter-1 Gi0/0/1
+ ip address 10.0.0.2 255.255.255.0
+ ip nat inside
+ media-type rj45
+ negotiation auto
+ no shutdown
+exit
+
+interface GigabitEthernet0/0/2
+ description Reserved
+ no ip address
+ ip nat inside
+ shutdown
+ media-type sfp
+ negotiation auto
+exit
+
+interface GigabitEthernet0/1/0
+ description Connection to Switch_C_3850
+ switchport mode access
+ no shutdown
+exit
+
+interface GigabitEthernet0/1/1
+ description Connection to VLAN 300 device
+ switchport access vlan 300
+ switchport mode access
+ no shutdown
+exit
+
+interface GigabitEthernet0/1/2
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/3
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/4
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/5
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/6
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0/1/7
+ description Unused
+ shutdown
+exit
+
+interface GigabitEthernet0
+ description Management Interface
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+exit
+
+interface Vlan1
+ description Connection to Switch_C_3850
+ ip address 10.0.3.1 255.255.255.0
+ ip nat inside
+ no shutdown
+exit
+
+vlan 300
+ name VLAN300
+exit
+
+interface Vlan300
+ description Additional Network Segment
+ ip address 10.0.4.1 255.255.255.0
+ ip nat inside
+ no shutdown
+exit
+
+router ospf 1
+ auto-cost reference-bandwidth 1000
+ network 0.0.0.0 255.255.255.255 area 0
+exit
+
+ip forward-protocol nd
+ip tcp synwait-time 10
+ip tftp source-interface GigabitEthernet0
+
+no ip http server
+no ip http secure-server
+
+ip nat inside source list NAT-TRAFFIC interface GigabitEthernet0/0/1 overload
+
+ip route 0.0.0.0 0.0.0.0 10.0.0.1
+
+ip access-list extended NAT-TRAFFIC
+ 10 deny ip 10.0.0.0 0.0.255.255 192.168.1.0 0.0.0.255
+ 20 permit ip 10.0.0.0 0.0.255.255 any
+exit
+
+logging host 192.168.1.8
+logging host 192.168.1.10
+
+snmp-server group admin v3 auth
+snmp-server group monitor v3 auth
+snmp-server location Home Lab - Building 1
+snmp-server contact Network Admin
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps config
+snmp-server enable traps entity
+snmp-server enable traps syslog
+snmp-server host 192.168.1.10 public
+snmp-server host 192.168.1.8 public
+
+tacacs server 192.168.1.100
+ address ipv4 192.168.1.100
+ key 7 012707075A08153C244F5C0C0D544541
+ timeout 10
+exit
+
+tacacs server 192.168.1.101
+ address ipv4 192.168.1.101
+ key 7 03305A08070C327F4B0A0B000343595F
+ timeout 10
+exit
+
+ip ssh bulk-mode 131072
+ip ssh rsa keypair-name EdgeLabRouter-2.mdblab.com
+ip ssh version 2
+ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512 hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com
+ip scp server enable
+
+control-plane
+exit
+
+line con 0
+ exec-timeout 30 0
+ logging synchronous
+ stopbits 1
+exit
+
+line aux 0
+exit
+
+line vty 0 4
+ exec-timeout 15 0
+ login authentication VTY-LOGIN
+ transport input ssh
+ transport output ssh
+exit
+
+line vty 5 15
+ exec-timeout 15 0
+ login authentication VTY-LOGIN
+ transport input ssh
+ transport output ssh
+exit
+
+ntp server pool.ntp.org prefer
+ntp server time.cloudflare.com prefer
+ntp server time.nist.gov prefer
+
+end
+
+write memory
