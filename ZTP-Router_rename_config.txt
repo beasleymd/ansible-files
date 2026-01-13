@@ -1,5 +1,5 @@
 !
-! Configuration to rename EdgeLabRouter to ZTP-Router
+! Configuration to rename EdgeLabRouter to ZTP-Router and change IP to 10.0.1.2
 ! This file contains commands to paste via console to rename the router
 ! Password: c1sc0 (for enable secret and username admin)
 !
@@ -8,6 +8,34 @@ configure terminal
 
 ! Change hostname
 hostname ZTP-Router
+
+! Update interface IP addresses
+interface GigabitEthernet0/0/1
+ description ZTP Provisioning Network
+ ip address 10.0.1.2 255.255.255.0
+exit
+
+interface Vlan1
+ description ZTP Management VLAN
+ ip address 10.0.1.2 255.255.255.0
+exit
+
+! Update OSPF network
+router ospf 1
+ no network 10.0.0.0 0.0.0.255 area 0
+ network 10.0.1.0 0.0.0.255 area 0
+exit
+
+! Update DHCP for ZTP clients
+no ip dhcp pool ZTP-POOL
+ip dhcp excluded-address 10.0.1.1 10.0.1.10
+
+ip dhcp pool ZTP-POOL
+ network 10.0.1.0 255.255.255.0
+ default-router 10.0.1.2
+ dns-server 192.168.1.8
+ lease 0 2 0
+exit
 
 ! Update SSH keypair name to match new hostname
 ip ssh rsa keypair-name ZTP-Router.mdblab.com
@@ -18,21 +46,6 @@ crypto key generate rsa general-keys modulus 2048
 ! Update SNMP location
 snmp-server location Home Lab - Building 1 - ZTP Router
 
-! Update interface descriptions if needed
-interface GigabitEthernet0/0/1
- description ZTP Provisioning Network
-exit
-
-! Optional: Add DHCP for ZTP clients
-ip dhcp excluded-address 10.0.0.1 10.0.0.10
-!
-ip dhcp pool ZTP-POOL
- network 10.0.0.0 255.255.255.0
- default-router 10.0.0.1
- dns-server 192.168.1.8
- lease 0 2 0
-exit
-
 ! Enable HTTPS for ZTP if needed
 ip http secure-server
 
@@ -42,4 +55,5 @@ write memory
 
 ! Verify changes
 show running-config | include hostname
+show ip interface brief
 show ip ssh

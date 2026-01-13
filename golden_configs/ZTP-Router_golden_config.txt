@@ -1,7 +1,7 @@
 !
 ! ZTP-Router Golden Configuration
 ! ISR4331/K9 - IOS 17.x
-! Management IP: 10.0.0.1
+! Management IP: 10.0.1.2
 ! Created: 2026-01-13
 ! Purpose: Zero Touch Provisioning router for lab automation and device onboarding
 !
@@ -76,7 +76,7 @@ interface GigabitEthernet0/0/0
 !
 interface GigabitEthernet0/0/1
  description ZTP Provisioning Network
- ip address 10.0.0.1 255.255.255.0
+ ip address 10.0.1.2 255.255.255.0
  media-type rj45
  negotiation auto
 !
@@ -127,21 +127,21 @@ interface GigabitEthernet0
 !
 interface Vlan1
  description ZTP Management VLAN
- ip address 10.0.0.1 255.255.255.0
+ ip address 10.0.1.2 255.255.255.0
 !
 router ospf 1
  auto-cost reference-bandwidth 1000
- network 10.0.0.0 0.0.0.255 area 0
+ network 10.0.1.0 0.0.0.255 area 0
 !
 ip forward-protocol nd
 ip tcp synwait-time 10
 !
 ! DHCP for ZTP clients
-ip dhcp excluded-address 10.0.0.1 10.0.0.10
+ip dhcp excluded-address 10.0.1.1 10.0.1.10
 !
 ip dhcp pool ZTP-POOL
- network 10.0.0.0 255.255.255.0
- default-router 10.0.0.1
+ network 10.0.1.0 255.255.255.0
+ default-router 10.0.1.2
  dns-server 192.168.1.8
  lease 0 2 0
 !

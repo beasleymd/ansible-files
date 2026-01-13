@@ -33,13 +33,13 @@
 - **Default Route**: 10.0.0.1 (routes through EdgeLabRouter-1)
 - **Config File**: `paste_configs/EdgeLabRouter-2_paste_ready.txt`
 
-### ZTP-Router (EdgeLabRouter to be renamed)
-- **Management IP**: 10.0.0.1
+### ZTP-Router
+- **Management IP**: 10.0.1.2
 - **Serial Number**: FLM2120W1Y6
 - **Purpose**: Zero Touch Provisioning router for lab automation
 - **Networks**:
-  - ZTP Network: 10.0.0.1/24 (Gi0/0/1 and VLAN 1)
-  - DHCP Pool: 10.0.0.11 - 10.0.0.254
+  - ZTP Network: 10.0.1.2/24 (Gi0/0/1 and VLAN 1)
+  - DHCP Pool: 10.0.1.11 - 10.0.1.254
 - **Features**:
   - DHCP server for ZTP clients
   - HTTPS enabled for provisioning
@@ -70,10 +70,10 @@ Internet
     +-- VLAN 1: 10.0.1.0/24
     +-- VLAN 200: 10.0.2.0/24
 
-[ZTP-Router] 10.0.0.1
+[ZTP-Router] 10.0.1.2
     |
-    +-- ZTP Network: 10.0.0.0/24
-    +-- DHCP: 10.0.0.11 - 254
+    +-- ZTP Network: 10.0.1.0/24
+    +-- DHCP: 10.0.1.11 - 254
     +-- 4 ZTP Client Ports
 ```
 
@@ -93,7 +93,7 @@ ansible-files/
 │   ├── EdgeLabRouter-1_paste_ready.txt
 │   ├── EdgeLabRouter-2_paste_ready.txt
 │   └── ZTP-Router_paste_ready.txt
-├── ZTP-Router_rename_config.txt   # Commands to rename EdgeLabRouter
+├── ZTP-Router_rename_config.txt   # Commands to rename router to ZTP-Router and change IP to 10.0.1.2
 └── ios_upgrade_edgelabrouter1.yml # Ansible playbook for IOS upgrade
 ```
 
@@ -105,10 +105,10 @@ ansible-files/
 3. Paste into the console (Command+V in screen)
 4. Configuration will be applied and saved automatically
 
-**To rename EdgeLabRouter to ZTP-Router:**
-1. Connect to EdgeLabRouter via console
+**To rename router to ZTP-Router and change IP to 10.0.1.2:**
+1. Connect to router via console
 2. Paste contents of `ZTP-Router_rename_config.txt`
-3. Verify with: `show running-config | include hostname`
+3. Verify with: `show running-config | include hostname` and `show ip interface brief`
 
 ---
 
@@ -159,14 +159,14 @@ ansible-files/
 | Interface | Description | IP Address | Status |
 |-----------|-------------|------------|--------|
 | Gi0/0/0 | WAN (Optional) | - | DOWN |
-| Gi0/0/1 | ZTP Provisioning Network | 10.0.0.1/24 | UP |
+| Gi0/0/1 | ZTP Provisioning Network | 10.0.1.2/24 | UP |
 | Gi0/0/2 | Reserved | - | DOWN |
 | Gi0/1/0 | ZTP Client Port 1 | Switchport | UP |
 | Gi0/1/1 | ZTP Client Port 2 | Switchport | UP |
 | Gi0/1/2 | ZTP Client Port 3 | Switchport | UP |
 | Gi0/1/3 | ZTP Client Port 4 | Switchport | UP |
 | Gi0/1/4-7 | Unused | Switchport | DOWN |
-| VLAN 1 | ZTP Management | 10.0.0.1/24 | UP |
+| VLAN 1 | ZTP Management | 10.0.1.2/24 | UP |
 
 ---
 
@@ -184,7 +184,7 @@ ssh admin@10.0.0.2
 
 ### ZTP-Router
 ```bash
-ssh admin@10.0.0.1
+ssh admin@10.0.1.2
 ```
 
 **Password**: c1sc0
