@@ -9,16 +9,16 @@
 ## Router Overview
 
 ### EdgeLabRouter-1
-- **Management IP**: 192.168.1.55
+- **Management IP**: 192.168.10.55
 - **Serial Number**: FLM2245034A
 - **Purpose**: Primary edge router with WAN connectivity
 - **Networks**:
-  - WAN: 192.168.1.55/24 (Gi0/0/0)
+  - WAN: 192.168.10.55/24 (Gi0/0/0)
   - LAN: 10.0.0.1/24 (Gi0/0/1) - connects to EdgeLabRouter-2
   - VLAN 1: 10.0.1.1/24
   - VLAN 200: 10.0.2.1/24
 - **Features**: OSPF, NAT (overload on Gi0/0/0), SSH, SNMP, TACACS, NTP, Logging
-- **Default Route**: 192.168.1.1 via Gi0/0/0
+- **Default Route**: 192.168.10.1 via Gi0/0/0
 - **Config File**: `paste_configs/EdgeLabRouter-1_paste_ready.txt`
 
 ### EdgeLabRouter-2
@@ -56,9 +56,9 @@
 ```
 Internet
     |
-    | 192.168.1.1 (Gateway)
+    | 192.168.10.1 (Gateway)
     |
-[EdgeLabRouter-1] 192.168.1.55 (WAN)
+[EdgeLabRouter-1] 192.168.10.55 (WAN)
     |
     | 10.0.0.1 (LAN)
     |
@@ -119,9 +119,9 @@ ansible-files/
 - **Enable Password**: c1sc0
 - **Username**: admin / Password: c1sc0
 - **SSH**: Version 2, 2048-bit RSA keys
-- **Logging Servers**: 192.168.1.8, 192.168.1.10
-- **SNMP Hosts**: 192.168.1.8, 192.168.1.10
-- **TACACS Servers**: 192.168.1.100, 192.168.1.101
+- **Logging Servers**: 192.168.10.8, 192.168.10.10
+- **SNMP Hosts**: 192.168.10.8, 192.168.10.10
+- **TACACS Servers**: 192.168.10.100, 192.168.10.101
 - **NTP Servers**: pool.ntp.org, time.cloudflare.com, time.nist.gov
 - **OSPF**: Area 0, reference-bandwidth 1000
 - **Console**: 30 min timeout, logging synchronous
@@ -134,7 +134,7 @@ ansible-files/
 ### EdgeLabRouter-1
 | Interface | Description | IP Address | Status |
 |-----------|-------------|------------|--------|
-| Gi0/0/0 | WAN Interface | 192.168.1.55/24 | UP |
+| Gi0/0/0 | WAN Interface | 192.168.10.55/24 | UP |
 | Gi0/0/1 | Connection to EdgeLabRouter-2 | 10.0.0.1/24 | UP |
 | Gi0/0/2 | Reserved | - | DOWN |
 | Gi0/1/0 | Switch_B_3850 | Switchport | UP |
@@ -174,7 +174,7 @@ ansible-files/
 
 ### EdgeLabRouter-1
 ```bash
-ssh admin@192.168.1.55
+ssh admin@192.168.10.55
 ```
 
 ### EdgeLabRouter-2
@@ -217,7 +217,7 @@ ssh admin@10.0.1.2
 ansible-playbook backup_configs.yml
 
 # Via SSH/SCP
-scp admin@192.168.1.55:system:running-config EdgeLabRouter-1-backup.cfg
+scp admin@192.168.10.55:system:running-config EdgeLabRouter-1-backup.cfg
 ```
 
 ### Verify Configuration

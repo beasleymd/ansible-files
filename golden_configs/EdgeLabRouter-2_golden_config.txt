@@ -159,11 +159,11 @@ ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512 hmac-sha2-256-etm@openss
 ip scp server enable
 !
 ip access-list extended NAT-TRAFFIC
- 10 deny ip 10.0.0.0 0.0.255.255 192.168.1.0 0.0.0.255
+ 10 deny ip 10.0.0.0 0.0.255.255 192.168.10.0 0.0.0.255
  20 permit ip 10.0.0.0 0.0.255.255 any
 !
-logging host 192.168.1.8
-logging host 192.168.1.10
+logging host 192.168.10.8
+logging host 192.168.10.10
 !
 snmp-server group admin v3 auth
 snmp-server group monitor v3 auth
@@ -173,15 +173,15 @@ snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
 snmp-server enable traps config
 snmp-server enable traps entity
 snmp-server enable traps syslog
-snmp-server host 192.168.1.10 public
-snmp-server host 192.168.1.8 public
+snmp-server host 192.168.10.10 public
+snmp-server host 192.168.10.8 public
 !
-tacacs server 192.168.1.100
- address ipv4 192.168.1.100
+tacacs server 192.168.10.100
+ address ipv4 192.168.10.100
  key 7 012707075A08153C244F5C0C0D544541
  timeout 10
-tacacs server 192.168.1.101
- address ipv4 192.168.1.101
+tacacs server 192.168.10.101
+ address ipv4 192.168.10.101
  key 7 03305A08070C327F4B0A0B000343595F
  timeout 10
 !

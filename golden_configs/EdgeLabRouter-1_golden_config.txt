@@ -1,7 +1,7 @@
 !
 ! EdgeLabRouter-1 Golden Configuration
 ! ISR4331/K9 - IOS 17.12.06
-! Management IP: 192.168.1.55
+! Management IP: 192.168.10.55
 ! Created: 2026-01-13
 ! Purpose: Primary edge router with WAN connectivity and internal networks
 !
@@ -70,7 +70,7 @@ spanning-tree extend system-id
 !
 interface GigabitEthernet0/0/0
  description WAN Interface to AAP Network
- ip address 192.168.1.55 255.255.255.0
+ ip address 192.168.10.55 255.255.255.0
  ip nat outside
  negotiation auto
 !
@@ -149,8 +149,8 @@ no ip http server
 no ip http secure-server
 !
 ip nat inside source list NAT-TRAFFIC interface GigabitEthernet0/0/0 overload
-ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/0 192.168.1.1
-ip route 0.0.0.0 0.0.0.0 192.168.1.1
+ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0/0 192.168.10.1
+ip route 0.0.0.0 0.0.0.0 192.168.10.1
 ip ssh bulk-mode 131072
 ip ssh rsa keypair-name EdgeLabRouter-1.mdblab.com
 ip ssh version 2
@@ -158,11 +158,11 @@ ip ssh server algorithm mac hmac-sha2-256 hmac-sha2-512 hmac-sha2-256-etm@openss
 ip scp server enable
 !
 ip access-list extended NAT-TRAFFIC
- 10 deny ip 10.0.0.0 0.0.255.255 192.168.1.0 0.0.0.255
+ 10 deny ip 10.0.0.0 0.0.255.255 192.168.10.0 0.0.0.255
  20 permit ip 10.0.0.0 0.0.255.255 any
 !
-logging host 192.168.1.8
-logging host 192.168.1.10
+logging host 192.168.10.8
+logging host 192.168.10.10
 !
 snmp-server group admin v3 auth
 snmp-server group monitor v3 auth
@@ -172,15 +172,15 @@ snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
 snmp-server enable traps config
 snmp-server enable traps entity
 snmp-server enable traps syslog
-snmp-server host 192.168.1.10 public
-snmp-server host 192.168.1.8 public
+snmp-server host 192.168.10.10 public
+snmp-server host 192.168.10.8 public
 !
-tacacs server 192.168.1.100
- address ipv4 192.168.1.100
+tacacs server 192.168.10.100
+ address ipv4 192.168.10.100
  key 7 012707075A08153C244F5C0C0D544541
  timeout 10
-tacacs server 192.168.1.101
- address ipv4 192.168.1.101
+tacacs server 192.168.10.101
+ address ipv4 192.168.10.101
  key 7 03305A08070C327F4B0A0B000343595F
  timeout 10
 !

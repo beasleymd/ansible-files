@@ -33,7 +33,7 @@ ip dhcp excluded-address 10.0.1.1 10.0.1.10
 ip dhcp pool ZTP-POOL
  network 10.0.1.0 255.255.255.0
  default-router 10.0.1.2
- dns-server 192.168.1.8
+ dns-server 192.168.10.1
  lease 0 2 0
 exit
 
