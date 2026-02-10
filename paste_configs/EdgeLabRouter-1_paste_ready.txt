@@ -186,8 +186,8 @@ ip access-list extended NAT-TRAFFIC
  20 permit ip 10.0.0.0 0.0.255.255 any
 exit
 
-logging host 192.168.10.8
-logging host 192.168.10.10
+logging host 10.0.0.8
+logging host 10.0.0.10
 
 snmp-server group admin v3 auth
 snmp-server group monitor v3 auth
@@ -197,17 +197,17 @@ snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
 snmp-server enable traps config
 snmp-server enable traps entity
 snmp-server enable traps syslog
-snmp-server host 192.168.10.10 public
-snmp-server host 192.168.10.8 public
+snmp-server host 10.0.0.10 public
+snmp-server host 10.0.0.8 public
 
-tacacs server 192.168.10.100
- address ipv4 192.168.10.100
+tacacs server 10.0.0.100
+ address ipv4 10.0.0.100
  key 7 012707075A08153C244F5C0C0D544541
  timeout 10
 exit
 
-tacacs server 192.168.10.101
- address ipv4 192.168.10.101
+tacacs server 10.0.0.101
+ address ipv4 10.0.0.101
  key 7 03305A08070C327F4B0A0B000343595F
  timeout 10
 exit

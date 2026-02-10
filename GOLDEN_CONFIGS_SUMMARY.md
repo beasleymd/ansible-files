@@ -119,9 +119,9 @@ ansible-files/
 - **Enable Password**: c1sc0
 - **Username**: admin / Password: c1sc0
 - **SSH**: Version 2, 2048-bit RSA keys
-- **Logging Servers**: 192.168.10.8, 192.168.10.10
-- **SNMP Hosts**: 192.168.10.8, 192.168.10.10
-- **TACACS Servers**: 192.168.10.100, 192.168.10.101
+- **Logging Servers**: 10.0.0.8, 10.0.0.10
+- **SNMP Hosts**: 10.0.0.8, 10.0.0.10
+- **TACACS Servers**: 10.0.0.100, 10.0.0.101
 - **NTP Servers**: pool.ntp.org, time.cloudflare.com, time.nist.gov
 - **OSPF**: Area 0, reference-bandwidth 1000
 - **Console**: 30 min timeout, logging synchronous

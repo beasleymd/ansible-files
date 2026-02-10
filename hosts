@@ -18,14 +18,14 @@ EdgeLabRouter-2 ansible_host=10.0.0.2
 ZTD_Switch ansible_host=10.0.0.200
 
 [vcenter]
-vCenter_Homelab ansible_host=192.168.10.52
+vCenter_Homelab ansible_host=10.0.0.52
 
 [juniper]
 vMX_R1 ansible_host=192.168.1.x
 vMX_R2 ansible_host=192.168.1.x
 
 [gns3_equip]
-GNS3_C_R1 ansible_host=192.168.10.96
+GNS3_C_R1 ansible_host=10.0.0.96
 
 [cisco:children]
 routers
